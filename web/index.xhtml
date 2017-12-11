@@ -2,19 +2,75 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <meta charset="UTF-8"></meta>
-        <link rel="stylesheet" type="text/css" href="style.css"></link>
-        <title> RainbowUnicornLibrary </title>
-    </h:head>
-    <h:body>
-        <div class="header">
+<h:head>
+    <meta charset="UTF-8"></meta>
+    <link rel="stylesheet" type="text/css" href="style.css"></link>
+    <title> RainbowUnicornLibrary </title>
+</h:head>
+<h:body>
+    <div class="header">
         <img src="res/giflogo.gif" alt="logo" />
         <h1>Rainbow Unicorn Library</h1>
+    </div>
+    <div>
+        <input type="text" name="search" placeholder="Search.."></input>
+    </div>
+    <h:panelGroup binding="#{TableBean.dynamicDataTableGroup}" />
+
+    <main>
+        <div class="tabs">
+            <input id="tab1" type="radio" name="tabs"/>
+            <label for="tab1">Books</label>
+
+            <input id="tab2" type="radio" name="tabs"/>
+            <label for="tab2">DVDs</label>
+
+            <input id="tab3" type="radio" name="tabs"/>
+            <label for="tab3">Magazines</label>
+
+            <section id="content1">
+                <table>
+                    <tr>
+                        <th>Title</th>
+                        <th>ISBN</th>
+                    </tr>
+                    <tr>
+                        <td>Harry Potter</td>
+                        <td>123908190285</td>
+                    </tr>
+                    <tr>
+                        <td>Die Zwerge</td>
+                        <td>123890450932</td>
+                    </tr>
+                </table>
+            </section>
+
+            <section id="content2">
+                <table>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                    </tr>
+                    <tr>
+                        <td>Harry Potter</td>
+                        <td>goht di garnix a</td>
+                    </tr>
+                </table>
+            </section>
+
+            <section id="content3">
+                <table>
+                    <tr>
+                        <th>Title</th>
+                        <th>Edition</th>
+                    </tr>
+                    <tr>
+                        <td>eMedia</td>
+                        <td>21</td>
+                    </tr>
+                </table>
+            </section>
         </div>
-<div>
-    <input type="text" name="search" placeholder="Search.."></input>
-</div>
-<h:panelGroup binding="#{TableBean.dynamicDataTableGroup}" />
-    </h:body>
+    </main>
+</h:body>
 </html>
