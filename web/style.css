@@ -1,18 +1,34 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,600,700");
 @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
 
+/*
+==================
+Index und Allgemain
+==================
+*/
 
-.header{width:80%;
+.header{
+  overflow: auto;
 }
 
-.header img{ width: 20%;
+.header-thumb{
+  float: left;
+}
+.header-thumb img{
+  display: block;
 }
 
-.header h1{
-    display:inline;
+.header-content{
+  margin-left: 12%;
 }
+
+.in{
+  width: 1337px;
+  margin: 0 auto;
+}
+
 input[type=text] {
-    width: 130px;
+    width: 1337px;
     box-sizing: border-box;
     border: 2px solid #ccc;
     border-radius: 4px;
@@ -21,14 +37,15 @@ input[type=text] {
     background-size: 35px;
     background-repeat: no-repeat;
     padding: 12px 20px 12px 40px;
-    -webkit-transition: width 0.4s ease-in-out;
-    transition: width 0.4s ease-in-out;
-    margin-top: 40px;
+    /*-webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;*/
+    /*margin-top: 40px;*/
+    margin: 0 auto;
 }
 
-input[type=text]:focus {
+/*input[type=text]:focus {
     width: 100%;
-}
+}*/
 
 .header h1{
     background: url('res/rainbowtest.png') -80px -80px;
@@ -38,9 +55,8 @@ input[type=text]:focus {
     font-weight: bold;
     font-size: 60px;
     font-family: arial, helvetica;
-    width: 600px;
-    margin: 50px auto;
-    text-align: center;
+    text-align: left;
+    margin-top: 10%;
 }
 
 table {
@@ -53,10 +69,6 @@ td, th {
     border: 1px solid #dddddd;
     text-align: left;
     padding: 8px;
-}
-
-tr:nth-child(even) {
-    background-color: #dddddd;
 }
 
 *, *:before, *:after {
@@ -160,4 +172,78 @@ tabs.input:checked + label {
     label {
         padding: 15px;
     }
+}
+
+/*
+==================
+Detailansicht
+==================
+*/
+
+.content {
+  margin-top: 2%;
+  margin-left: 8%;
+  width: 82%;
+  height: 100%;
+  background: #ffcbd3;
+  resize: both;
+  overflow: auto;
+}
+
+.content h1{
+  padding: 50px 0;
+  font-weight: 400;
+  text-align: center;
+  font-size: 48px;
+  font-weight: bold;
+}
+
+.picture{
+  float: right;
+}
+.picture img {
+  display: block;
+  height: 620px;
+	width: 450px;
+}
+
+.sum table{
+    width: 400px;
+    border: 1px solid #ddd;
+    background-color: white;
+}
+
+.img-border{
+  height: 620px;
+  width: 900px;
+  margin: 0 auto;
+}
+
+.status{
+  width: 900px;
+  margin: 0 auto;
+}
+
+.status table{
+  width: 900px;
+  border: 1px solid #ddd;
+  background-color: white;
+}
+
+.content a{
+  text-decoration: none;
+  display: inline-block;
+  padding: 8px 16px;
+}
+
+.content a:hover{
+  background-color: #ddd;
+  color: black;
+}
+
+.previous{
+  margin-top: 1%;
+  margin-left: 1%;
+  background-color: white;
+  color: black;
 }

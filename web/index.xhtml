@@ -9,14 +9,16 @@
 </h:head>
 <h:body>
     <div class="header">
-        <img src="res/giflogo.gif" alt="logo" />
-        <h1>Rainbow Unicorn Library</h1>
+      <div class="header-thumb"><a href="index.xhtml"><img src="res/giflogo.gif" alt="logo" /></a></div>
+      <div class="header-content">
+          <h1>Rainbow Unicorn Library</h1>
+      </div>
     </div>
-    <div>
+    <div class="in">
         <input type="text" name="search" placeholder="Search.."></input>
     </div>
     <h:panelGroup binding="#{TableBean.dynamicDataTableGroup}" />
-
+    <br/>
     <main>
         <div class="tabs">
             <input id="tab1" type="radio" name="tabs"/>
@@ -53,7 +55,7 @@
                     </tr>
                     <tr>
                         <td>Harry Potter</td>
-                        <td>goht di garnix a</td>
+                        <td>Joanne K. Rowling</td>
                     </tr>
                 </table>
             </section>
