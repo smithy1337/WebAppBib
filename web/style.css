@@ -1,18 +1,6 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : 11.12.2017, 11:14:05
-    Author     : smithY
-*/
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,600,700");
 @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
 
-body {
-    background-color: lightpink;
-}
 
 .header{width:80%;
 }
@@ -79,12 +67,9 @@ tr:nth-child(even) {
 }
 
 html, body {
-    height: 100vh;
-}
-
-body {
     font: 14px/1 'Open Sans', sans-serif;
-    color: #555;
+    height: 100vh;
+    background-color: lightpink;
 }
 
 input[type="radio"]{
@@ -176,4 +161,3 @@ tabs.input:checked + label {
         padding: 15px;
     }
 }
-
