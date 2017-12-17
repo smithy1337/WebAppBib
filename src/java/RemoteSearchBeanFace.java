@@ -1,10 +1,6 @@
 import java.util.ArrayList;
 import javax.ejb.Remote;
 
-/**
- *
- * @author smithY
- */
 
 @Remote
 public interface RemoteSearchBeanFace {
