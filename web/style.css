@@ -27,6 +27,22 @@ Index und Allgemain
   margin: 0 auto;
 }
 
+.in h:inputText{
+  width: 1337px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-image: url('res/searchicon.png');
+  background-size: 35px;
+  background-repeat: no-repeat;
+  padding: 12px 20px 12px 40px;
+  /*-webkit-transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;*/
+  /*margin-top: 40px;*/
+  margin: 0 auto;
+}
+
 input[type=text] {
     width: 1337px;
     box-sizing: border-box;
