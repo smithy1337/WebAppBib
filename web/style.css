@@ -37,9 +37,6 @@ Index und Allgemain
   background-size: 35px;
   background-repeat: no-repeat;
   padding: 12px 20px 12px 40px;
-  /*-webkit-transition: width 0.4s ease-in-out;
-  transition: width 0.4s ease-in-out;*/
-  /*margin-top: 40px;*/
   margin: 0 auto;
 }
 
@@ -262,4 +259,20 @@ Detailansicht
   margin-left: 1%;
   background-color: white;
   color: black;
+}
+
+.text-input{
+  width: 1337px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-image: url('res/searchicon.png');
+  background-size: 35px;
+  background-repeat: no-repeat;
+  padding: 12px 20px 12px 40px;
+  /*-webkit-transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;*/
+  /*margin-top: 40px;*/
+  margin: 0 auto;
 }

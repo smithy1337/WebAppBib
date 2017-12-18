@@ -2,9 +2,10 @@ import java.util.ArrayList;
 import javax.faces.bean.ManagedBean;
 import javax.enterprise.context.SessionScoped;
 
+
 @ManagedBean (name = "managedSeachBean")
-@SessionScoped
-public class ManagedSearchBean {
+
+public class ManagedSearchBean{
 
     @EJB
     private RemoteSearchBeanFace remoteSearchBean;
@@ -42,7 +43,7 @@ public class ManagedSearchBean {
     }
 
     public void getDvdByTitle(String title){
-      titleDvd = remoteSearchBean.getDvdByTitle(title);
+      titleDvds = remoteSearchBean.getDvdByTitle(title);
     }
 
     public void getMagazinesByTitleAndEdition(String title, String edition){
@@ -96,3 +97,4 @@ public class ManagedSearchBean {
 	public void setTitleMagazins(ArrayList<MagazineDTO> titleMagazins) {
 		this.titleMagazins = titleMagazins;
 	}
+}

@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
     <meta charset="UTF-8"></meta>
     <link rel="stylesheet" type="text/css" href="style.css"></link>
@@ -17,11 +18,10 @@
       </div>
     </div>
     <div class="in">
-        <!--<input type="text" name="search" placeholder="Search.."></input>-->
-        <h:inputText id="inputId" type="text" placeholder="Search.." value="" onkeyup ="#{managedSeachBean.search(this)}"/>
-        <h:inputTextarea value="" cols="20" rows="10"/>
+        <!-- <input type="text" name="search" placeholder="Search.."></input> -->
+        <h:inputText binding="#{searchString}" styleClass="text-input" onkeyup ="#{managedSeachBean.search(searchString)}"/>
     </div>
-    <h:panelGroup binding="#{TableBean.dynamicDataTableGroup}" />
+    <!-- <h:panelGroup binding="#{TableBean.dynamicDataTableGroup}" /> -->
     <br/>
     <main>
         <div class="tabs">
@@ -34,7 +34,7 @@
             <input id="tab3" type="radio" name="tabs"/>
             <label for="tab3">Magazines</label>
 
-            <!--<section id="content1">
+            <section id="content1">
                 <table>
                     <tr>
                         <th>Title</th>
@@ -75,25 +75,22 @@
                         <td>21</td>
                     </tr>
                 </table>
-            </section> -->
-            <section id = "content1">
-            <h:dataTable value="#{managedSeachBean.books}" var="book" id="datachange"
-                                            styleClass="book"
-                                            cellspacing="0"
-                                            cellpadding="0"
-                                            border="0"
-                                            rowClasses="odd,even"
-                                            columnClasses="title,isbn">
-                                            <h:column>
-                                                <f:facet name="header">Title</f:facet>
-                                                <h:outputText value="#{book._title}"/>
-                                            </h:column>
-                                            <h:column>
-                                                <f:facet name="header">ISBN</f:facet>
-                                                <h:outputText value="#{book._isbn}"/>
-                                            </h:column>
-                                </h:dataTable>
-                              </section>
+            </section>
+
+            <section id="content1">
+              <table>
+                <tr>
+                    <th>Title</th>
+                    <th>ISBN</th>
+                </tr>
+                  <tr>
+                    <ui:repeat value="#{managedSeachBean.books}" var="book">
+                      <td>#{book.title}</td>
+                      <td>#{book.isbn}</td>
+                    </ui:repeat>
+                  </tr>
+            </table>
+          </section>
         </div>
     </main>
 </h:body>
