@@ -1,3 +1,5 @@
+package at.fhv.team3.domain.DTO;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;

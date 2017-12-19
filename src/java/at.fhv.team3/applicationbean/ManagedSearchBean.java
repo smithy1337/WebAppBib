@@ -1,3 +1,10 @@
+package at.fhv.team3.applicationbean;
+
+import at.fhv.team3.applicationbean.interfaces.RemoteSearchBeanFace;
+import at.fhv.team3.domain.DTO.BookDTO;
+import at.fhv.team3.domain.DTO.DTO;
+import at.fhv.team3.domain.DTO.DvdDTO;
+import at.fhv.team3.domain.DTO.MagazineDTO;
 import java.util.ArrayList;
 import javax.faces.bean.ManagedBean;
 import javax.enterprise.context.SessionScoped;
@@ -40,14 +47,14 @@ public class ManagedSearchBean implements Serializable{
         p.put("java.naming.factory.initial", "com.sun.enterprise.naming.SerialInitContextFactory");
         p.put("java.naming.factory.url.pkgs", "com.sun.enterprise.naming");
         p.put("java.naming.factory.state", "com.sun.corba.ee.impl.presentation.rmi.JNDIStateFactoryImpl");
-            
+
         InitialContext cfx;
         try {
             cfx = new InitialContext(p);
              remoteSearchBean = (RemoteSearchBeanFace) cfx.lookup("SearchEJB");
         } catch (NamingException ex) {
             Logger.getLogger(ManagedSearchBean.class.getName()).log(Level.SEVERE, null, ex);
-        }       
+        }
     }
 
     public void search(String searchTerm){
@@ -56,23 +63,23 @@ public class ManagedSearchBean implements Serializable{
       ArrayList<DTO> booksFound = allMedias.get(0);
       ArrayList<DTO> dvdsFound = allMedias.get(1);
       ArrayList<DTO> magazinesFound = allMedias.get(2);
-      
+
       for(int i = 0; i<booksFound.size(); i++){
           BookDTO book = (BookDTO) booksFound.get(i);
           books.add(book);
       }
-      
+
       for(int i = 0; i<dvdsFound.size(); i++){
           DvdDTO dvd = (DvdDTO) dvdsFound.get(i);
           dvds.add(dvd);
       }
-      
+
       for(int i = 0; i<magazinesFound.size(); i++){
           MagazineDTO magazine = (MagazineDTO) magazinesFound.get(i);
           magazines.add(magazine);
       }
-      
-      
+
+
     }
 
     public void getBooksByISBN(String isbn){
@@ -134,10 +141,10 @@ public class ManagedSearchBean implements Serializable{
 	public void setTitleMagazins(ArrayList<MagazineDTO> titleMagazins) {
 		this.titleMagazins = titleMagazins;
 	}
-        
+
         public void setFocus(){
         }
-        
+
         public int getFocus(){
             if(books.isEmpty()){
                     focus = 1;
@@ -152,27 +159,27 @@ public class ManagedSearchBean implements Serializable{
             }
             return focus;
         }
-        
+
         public void setFoundBooks(Boolean found){
             foundBooks = found;
         }
-        
+
         public Boolean getFoundBooks(){
             return foundBooks;
         }
-        
+
         public void setFoundDvds(Boolean found){
             foundDvds = found;
         }
-        
+
         public Boolean getFoundDvds(){
             return foundDvds;
         }
-        
+
         public void setFoundMagazines(Boolean found){
             foundMagazines = found;
         }
-        
+
         public Boolean getFoundMagazines(){
             return foundMagazines;
         }
