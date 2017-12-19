@@ -1,16 +1,29 @@
 package at.fhv.team3.applicationbean.interfaces;
 
-import at.fhv.team3.domain.DTO.BookDTO;
-import at.fhv.team3.domain.DTO.DTO;
-import at.fhv.team3.domain.DTO.DvdDTO;
-import at.fhv.team3.domain.DTO.MagazineDTO;
-import java.util.ArrayList;
-import javax.ejb.Remote;
+import at.fhv.team3.domain.dto.BookDTO;
+import at.fhv.team3.domain.dto.DTO;
+import at.fhv.team3.domain.dto.DvdDTO;
+import at.fhv.team3.domain.dto.MagazineDTO;
+import at.fhv.team3.domain.interfaces.Searchable;
 
+import javax.ejb.Remote;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Remote
-public interface RemoteSearchBeanFace {
-   
+public interface RemoteSearchBeanFace extends Serializable {
+
+    static final long serialVersionUID = 1L;
+
+    public List<DTO> getAllBookDTOs();
+
+    public List<DTO> getAllDvdDTOs();
+
+    public List<DTO> getAllMagazineDTOs();
+
+    public ArrayList<ArrayList<Searchable>> searchMedias(String searchTerm);
+
     public ArrayList<ArrayList<DTO>> search(String searchTerm);
 
     public ArrayList<BookDTO> getBooksByISBN(String isbn);

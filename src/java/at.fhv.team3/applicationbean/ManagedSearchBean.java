@@ -1,10 +1,10 @@
 package at.fhv.team3.applicationbean;
 
 import at.fhv.team3.applicationbean.interfaces.RemoteSearchBeanFace;
-import at.fhv.team3.domain.DTO.BookDTO;
-import at.fhv.team3.domain.DTO.DTO;
-import at.fhv.team3.domain.DTO.DvdDTO;
-import at.fhv.team3.domain.DTO.MagazineDTO;
+import at.fhv.team3.domain.dto.BookDTO;
+import at.fhv.team3.domain.dto.DTO;
+import at.fhv.team3.domain.dto.DvdDTO;
+import at.fhv.team3.domain.dto.MagazineDTO;
 import java.util.ArrayList;
 import javax.faces.bean.ManagedBean;
 import javax.enterprise.context.SessionScoped;
@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ejb.EJB;
+import javax.naming.Context;
 
 @ManagedBean (name = "managedSeachBean")
 @SessionScoped
@@ -36,22 +37,39 @@ public class ManagedSearchBean implements Serializable{
 
     public ManagedSearchBean(){
 
-        Properties p = new Properties();
-
-        //p.put("java.naming.factory.initial","org.jpn.interfaces.NamingContextFactory");
-        //p.put("java.naming.provider.url","jpn://localhost:3700");
-        //p.put("java.naming.factory.url.pkgs","org.jboss.naming:org.jpn.interfaces");
-
-        p.put("org.omg.CORBA.ORBInitialHost", "localhost");
-        p.put("org.omg.CORBA.ORBInitialPort", "3700");
-        p.put("java.naming.factory.initial", "com.sun.enterprise.naming.SerialInitContextFactory");
-        p.put("java.naming.factory.url.pkgs", "com.sun.enterprise.naming");
-        p.put("java.naming.factory.state", "com.sun.corba.ee.impl.presentation.rmi.JNDIStateFactoryImpl");
-
-        InitialContext cfx;
+        System.out.println("ficken");
         try {
-            cfx = new InitialContext(p);
-             remoteSearchBean = (RemoteSearchBeanFace) cfx.lookup("SearchEJB");
+            Properties p = new Properties();
+
+            //p.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.enterprise.naming.SerialInitContextFactory");
+            //p.setProperty("org.omg.CORBA.ORBInitialHost", "localhost");
+            //p.setProperty("org.omg.CORBA.ORBInitialPort", "3700");
+
+            /*Properties props = new Properties();
+            props.setProperty("org.omg.CORBA.ORBInitialHost", "localhost");
+            props.setProperty("org.omg.CORBA.ORBInitialPort", "3700");
+            props.setProperty("java.naming.factory.initial",
+                    "com.sun.enterprise.naming.SerialInitContextFactory");
+            props.setProperty("java.naming.factory.url.pkgs",
+                    "com.sun.enterprise.naming");
+            props.setProperty("java.naming.factory.state",
+                    "com.sun.corba.ee.impl.presentation.rmi.JNDIStateFactoryImpl");
+
+            InitialContext ctx = new InitialContext(props);
+            System.out.println("InitialContext done");
+            //RemoteSearchBeanFace remoteInterface = (RemoteSearchBeanFace) ctx.lookup("SearchEJB");
+            System.out.println("Remote access done");*/
+            
+            p.put(Context.INITIAL_CONTEXT_FACTORY, "com.sap.engine.services.jndi.InitialContextFactoryImpl");
+            p.put(Context.PROVIDER_URL, "localhost:3700");
+            
+            Context ctx = new InitialContext(p);
+            
+            //this.remoteSearchBean = (RemoteSearchBeanFace) ctx.lookup("SearchEJB!at.fhv.team3.applicationbean.interfaces.RemoteSearchBeanFace");
+            
+            Object o = ctx.lookup("ejb:/beanName=SearchEJB,interfaceName=at.fhv.team3.applicationbean.interfaces.RemoteSearchBeanFace");
+            remoteSearchBean = (RemoteSearchBeanFace) o;
+            //InitialContext cfx = new InitialContext(p);
         } catch (NamingException ex) {
             Logger.getLogger(ManagedSearchBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -60,7 +78,7 @@ public class ManagedSearchBean implements Serializable{
     public void search(String searchTerm){
       ArrayList<ArrayList<DTO>> allMedias = remoteSearchBean.search(searchTerm);
 
-      ArrayList<DTO> booksFound = allMedias.get(0);
+      /*ArrayList<DTO> booksFound = allMedias.get(0);
       ArrayList<DTO> dvdsFound = allMedias.get(1);
       ArrayList<DTO> magazinesFound = allMedias.get(2);
 
@@ -77,7 +95,7 @@ public class ManagedSearchBean implements Serializable{
       for(int i = 0; i<magazinesFound.size(); i++){
           MagazineDTO magazine = (MagazineDTO) magazinesFound.get(i);
           magazines.add(magazine);
-      }
+      }*/
 
 
     }
