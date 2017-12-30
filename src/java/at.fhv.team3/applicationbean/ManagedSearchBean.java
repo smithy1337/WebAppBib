@@ -5,6 +5,7 @@ import at.fhv.team3.domain.dto.BookDTO;
 import at.fhv.team3.domain.dto.DTO;
 import at.fhv.team3.domain.dto.DvdDTO;
 import at.fhv.team3.domain.dto.MagazineDTO;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.faces.bean.ManagedBean;
 import javax.enterprise.context.SessionScoped;
@@ -16,6 +17,8 @@ import javax.annotation.PostConstruct;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ejb.EJB;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.naming.Context;
 
@@ -40,6 +43,15 @@ public class ManagedSearchBean implements Serializable{
     private BookDTO book;
     private DvdDTO dvd;
     private MagazineDTO magazine;
+    
+    public void listener(ActionEvent ae){
+        String url = "detail.xhtml";
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().dispatch(url);
+        } catch (IOException ex) {
+            Logger.getLogger(ManagedSearchBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     public void search(){
       ArrayList<ArrayList<DTO>> allMedias = remoteSearchBean.search(searchTerm);
@@ -91,12 +103,9 @@ public class ManagedSearchBean implements Serializable{
       }
     }
     
-    public String bookAction(BookDTO book) {
+    public void bookAction(BookDTO book) {
         setBook(book);
-        setIsBook(true);
-        setIsDvd(false);
-        setIsMagazine(false);
-        return "detail.xhtml?faces-redirect=true";
+        //return "detail.xhtml?faces-redirect=true";
     }
     
     public void buttonAction(ActionEvent actionEvent) {
@@ -228,6 +237,10 @@ public class ManagedSearchBean implements Serializable{
     
     public void setBook(BookDTO book){
         this.book = book;
+        setIsBook(true);
+        setIsDvd(false);
+        setIsMagazine(false);
+        getBooksByISBN(book.getIsbn()); 
     }
     
     public BookDTO getBook(){

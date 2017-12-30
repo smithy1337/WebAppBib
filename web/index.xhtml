@@ -18,15 +18,15 @@
                 <h1>Rainbow Unicorn Library</h1>
             </div>
         </div>
+        <h:form id="formInput">
         <div class="in">
-            <h:form>
                 <!-- <input type="text" name="search" placeholder="Search.."></input> -->
                 <p:remoteCommand name="search" actionListener="#{managedSearchBean.search()}"/>
                 <p:inputText id="searchInput" value="#{managedSearchBean.searchTerm}" 
                              onkeypress="if (event.keyCode === 13) {search(); return false; }"/>
                 <h:commandButton value="Search" action="#{managedSearchBean.search()}" />
-            </h:form>
         </div>
+        </h:form>
         <br/>
         <main>
             <div class="tabs">
@@ -94,6 +94,7 @@
                                     <td>#{book.isbn}</td>
                                 </tr>
                             </ui:repeat> 
+                            
                             <p:dataTable id="bookTable" var="book" value="#{managedSearchBean.books}">
                                 <p:column headerText="Title">
                                     <h:outputText value="#{book.title}" />
@@ -101,17 +102,62 @@
                                 <p:column headerText="ISBN">
                                     <h:outputText value="#{book.isbn}" />
                                 </p:column>
+                                <!--<p:column style="width:32px;text-align: center">
+                                    <p:commandButton icon="ui-icon-search" title="View" actionListener="#{managedSearchBean.listener}">
+                                        <f:setPropertyActionListener value="#{book}" target="#{managedSearchBean.book}" />
+                                    </p:commandButton>
+                                </p:column> -->
                                 <p:column style="width:32px;text-align: center">
-                                    <h:form>
-                                        <p:commandButton icon="ui-icon-search" title="Show" action="#{managedSearchBean.bookAction(book)}">
-                                          
-                                        </p:commandButton>
-                                        <h:link outcome="detail" value="View" onclick="#{managedSearchBean.bookAction(book)}">
-                                            <f:param name="book" value="#{book}"/>
-                                        </h:link> 
-                                    </h:form>
-                                </p:column>
+                                    <h:form id="formViewButton">
+                                        <p:column style="width:32px;text-align: center">
+                                            <!-- <p:commandButton oncomplete="bookDialog.show()" icon="ui-icon-search" title="View" update=":formBookDetail:bookDetail">
+                                                <f:setPropertyActionListener value="#{book}" target="#{managedSearchBean.book}" />
+                                            </p:commandButton>-->
+                                            <p:commandLink value="View Detail" type="button" title="View" immediate="true">
+                                                <f:ajax listener="#{managedSearchBean.bookAction(book)}" render="bookDetail" onevent="function(data) { PF('bookDialog').show(); }" />
+                     
+                                            </p:commandLink>
+                                        </p:column>
+          
+                                    <p:dialog id="bookDetail" header="Book Info" widgetVar="bookDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                                        
+                                            <p:outputPanel style="text-align:center;">     
+                                                <p:panelGrid  columns="2" rendered="#{not empty managedSearchBean.book}" columnClasses="label,value">
+                                                    <f:facet name="header">
+                                                      <p:graphicImage value="#{managedSearchBean.book.pictureURL}" width="200" height="150"/> 
+                                                    </f:facet>
+
+                                                    <h:outputText value="Title:" />
+                                                    <h:outputText value="#{managedSearchBean.book.title}" />
+
+                                                    <h:outputText value="Publisher:" />
+                                                    <h:outputText value="#{managedSearchBean.book.publisher}" />
+
+                                                    <h:outputText value="Author:" />
+                                                    <h:outputText value="#{managedSearchBean.book.author}"/>
+
+                                                    <h:outputText value="ISBN:" />
+                                                    <h:outputText value="#{managedSearchBean.book.isbn}" />
+                                                </p:panelGrid>
+                                                <p:dataTable id="bookTable" var="isbnBook" value="#{managedSearchBean.isbnBooks}">
+                                                    <p:column headerText="Auflage:">
+                                                        <h:outputText value="#{isbnBook.edition}" />
+                                                    </p:column>
+                                                    <p:column headerText="Regalnummer">
+                                                        <h:outputText value="#{isbnBook.shelfPos}" />
+                                                    </p:column>
+                                                        <p:column headerText="Status">
+                                                            <h:outputText value="#{isbnBook.status}" />
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </p:outputPanel>
+                                      
+                                    </p:dialog>
+                                    
+                                    </h:form> 
+                                </p:column> 
                             </p:dataTable>
+                            
                         </table>
                     </section>
             </div>
