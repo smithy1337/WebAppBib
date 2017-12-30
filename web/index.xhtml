@@ -4,94 +4,118 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
-<h:head>
-    <meta charset="UTF-8"></meta>
-    <link rel="stylesheet" type="text/css" href="style.css"></link>
-    <title> RainbowUnicornLibrary </title>
-</h:head>
-<h:body>
-    <div class="header">
-      <div class="header-thumb"><a href="index.xhtml"><img src="res/giflogo.gif" alt="logo" /></a></div>
-      <div class="header-content">
-          <h1>Rainbow Unicorn Library</h1>
-      </div>
-    </div>
-    <div class="in">
-        <!-- <input type="text" name="search" placeholder="Search.."></input> -->
-        <h:inputText binding="#{searchString}" styleClass="text-input" onkeyup ="#{managedSeachBean.search(searchString)}"/>
-    </div>
-    <!-- <h:panelGroup binding="#{TableBean.dynamicDataTableGroup}" /> -->
-    <br/>
-    <main>
-        <div class="tabs">
-            <input id="tab1" type="radio" name="tabs"/>
-            <label for="tab1">Books</label>
-
-            <input id="tab2" type="radio" name="tabs"/>
-            <label for="tab2">DVDs</label>
-
-            <input id="tab3" type="radio" name="tabs"/>
-            <label for="tab3">Magazines</label>
-
-            <section id="content1">
-                <table>
-                    <tr>
-                        <th>Title</th>
-                        <th>ISBN</th>
-                    </tr>
-                    <tr>
-                        <td>Harry Potter</td>
-                        <td>123908190285</td>
-                    </tr>
-                    <tr>
-                        <td>Die Zwerge</td>
-                        <td>123890450932</td>
-                    </tr>
-                </table>
-            </section>
-
-            <section id="content2">
-                <table>
-                    <tr>
-                        <th>Title</th>
-                        <th>Author</th>
-                    </tr>
-                    <tr>
-                        <td>Harry Potter</td>
-                        <td>Joanne K. Rowling</td>
-                    </tr>
-                </table>
-            </section>
-
-            <section id="content3">
-                <table>
-                    <tr>
-                        <th>Title</th>
-                        <th>Edition</th>
-                    </tr>
-                    <tr>
-                        <td>eMedia</td>
-                        <td>21</td>
-                    </tr>
-                </table>
-            </section>
-
-            <section id="content1">
-              <table>
-                <tr>
-                    <th>Title</th>
-                    <th>ISBN</th>
-                </tr>
-                  <tr>
-                    <ui:repeat value="#{managedSeachBean.books}" var="book">
-                      <td>#{book.title}</td>
-                      <td>#{book.isbn}</td>
-                    </ui:repeat>
-                  </tr>
-            </table>
-          </section>
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <meta charset="UTF-8"></meta>
+        <link rel="stylesheet" type="text/css" href="style.css"></link>
+        <title> RainbowUnicornLibrary </title>
+    </h:head>
+    <h:body>
+        <div class="header">
+            <div class="header-thumb"><a href="index.xhtml"><img src="res/giflogo.gif" alt="logo" /></a></div>
+            <div class="header-content">
+                <h1>Rainbow Unicorn Library</h1>
+            </div>
         </div>
-    </main>
-</h:body>
+        <div class="in">
+            <h:form>
+                <!-- <input type="text" name="search" placeholder="Search.."></input> -->
+                <p:remoteCommand name="search" actionListener="#{managedSearchBean.search()}"/>
+                <p:inputText id="searchInput" value="#{managedSearchBean.searchTerm}" 
+                             onkeypress="if (event.keyCode === 13) {search(); return false; }"/>
+                <h:commandButton value="Search" action="#{managedSearchBean.search()}" />
+            </h:form>
+        </div>
+        <br/>
+        <main>
+            <div class="tabs">
+                    <input id="tab1" type="radio" name="tabs"/>
+                    <label for="tab1">Books</label>
+
+                    <input id="tab2" type="radio" name="tabs"/>
+                    <label for="tab2">DVDs</label>
+
+                    <input id="tab3" type="radio" name="tabs"/>
+                    <label for="tab3">Magazines</label>
+
+                    <section id="content1">
+                        <table>
+                            <tr>
+                                <th>Title</th>
+                                <th>ISBN</th>
+                            </tr>
+                            <tr>
+                                <td>Harry Potter</td>
+                                <td>123908190285</td>
+                            </tr>
+                            <tr>
+                                <td>Die Zwerge</td>
+                                <td>123890450932</td>
+                            </tr>
+                        </table>
+                    </section>
+
+                    <section id="content2">
+                        <table>
+                            <tr>
+                                <th>Title</th>
+                                <th>Author</th>
+                            </tr>
+                            <tr>
+                                <td>Harry Potter</td>
+                                <td>Joanne K. Rowling</td>
+                            </tr>
+                        </table>
+                    </section>
+
+                    <section id="content3">
+                        <table>
+                            <tr>
+                                <th>Title</th>
+                                <th>Edition</th>
+                            </tr>
+                            <tr>
+                                <td>eMedia</td>
+                                <td>21</td>
+                            </tr>
+                        </table>
+                    </section>
+
+                    <section id="content1">
+                        <table>
+                            <tr>
+                                <th>Title</th>
+                                <th>ISBN</th>
+                            </tr>
+                            <ui:repeat value="#{managedSearchBean.books}" var="book">
+                                <tr>  
+                                    <td><a href="detail.xhtml" onclick="#{managedSearchBean.bookAction(book)}">#{book.title}</a></td>
+                                    <td>#{book.isbn}</td>
+                                </tr>
+                            </ui:repeat> 
+                            <p:dataTable id="bookTable" var="book" value="#{managedSearchBean.books}">
+                                <p:column headerText="Title">
+                                    <h:outputText value="#{book.title}" />
+                                </p:column>
+                                <p:column headerText="ISBN">
+                                    <h:outputText value="#{book.isbn}" />
+                                </p:column>
+                                <p:column style="width:32px;text-align: center">
+                                    <h:form>
+                                        <p:commandButton icon="ui-icon-search" title="Show" action="#{managedSearchBean.bookAction(book)}">
+                                          
+                                        </p:commandButton>
+                                        <h:link outcome="detail" value="View" onclick="#{managedSearchBean.bookAction(book)}">
+                                            <f:param name="book" value="#{book}"/>
+                                        </h:link> 
+                                    </h:form>
+                                </p:column>
+                            </p:dataTable>
+                        </table>
+                    </section>
+            </div>
+        </main>
+        <br />
+    </h:body>
 </html>

@@ -12,93 +12,101 @@ import java.io.Serializable;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ejb.EJB;
+import javax.faces.event.ActionEvent;
 import javax.naming.Context;
 
-@ManagedBean (name = "managedSeachBean")
+@ManagedBean (name = "managedSearchBean")
 @SessionScoped
 public class ManagedSearchBean implements Serializable{
-
-    @EJB
+    
+    @EJB(mappedName="SearchEJB")
     private RemoteSearchBeanFace remoteSearchBean;
 
-    private ArrayList<BookDTO> books;
-    private ArrayList<DvdDTO> dvds;
-    private ArrayList<MagazineDTO> magazines;
-    private ArrayList<BookDTO> isbnBooks;
-    private ArrayList<DvdDTO> titleDvds;
-    private ArrayList<MagazineDTO> titleMagazins;
-    private int focus;
-    private Boolean foundBooks;
-    private Boolean foundDvds;
-    private Boolean foundMagazines;
-
-    public ManagedSearchBean(){
-
-        System.out.println("ficken");
-        try {
-            Properties p = new Properties();
-
-            //p.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.enterprise.naming.SerialInitContextFactory");
-            //p.setProperty("org.omg.CORBA.ORBInitialHost", "localhost");
-            //p.setProperty("org.omg.CORBA.ORBInitialPort", "3700");
-
-            /*Properties props = new Properties();
-            props.setProperty("org.omg.CORBA.ORBInitialHost", "localhost");
-            props.setProperty("org.omg.CORBA.ORBInitialPort", "3700");
-            props.setProperty("java.naming.factory.initial",
-                    "com.sun.enterprise.naming.SerialInitContextFactory");
-            props.setProperty("java.naming.factory.url.pkgs",
-                    "com.sun.enterprise.naming");
-            props.setProperty("java.naming.factory.state",
-                    "com.sun.corba.ee.impl.presentation.rmi.JNDIStateFactoryImpl");
-
-            InitialContext ctx = new InitialContext(props);
-            System.out.println("InitialContext done");
-            //RemoteSearchBeanFace remoteInterface = (RemoteSearchBeanFace) ctx.lookup("SearchEJB");
-            System.out.println("Remote access done");*/
-            
-            p.put(Context.INITIAL_CONTEXT_FACTORY, "com.sap.engine.services.jndi.InitialContextFactoryImpl");
-            p.put(Context.PROVIDER_URL, "localhost:3700");
-            
-            Context ctx = new InitialContext(p);
-            
-            //this.remoteSearchBean = (RemoteSearchBeanFace) ctx.lookup("SearchEJB!at.fhv.team3.applicationbean.interfaces.RemoteSearchBeanFace");
-            
-            Object o = ctx.lookup("ejb:/beanName=SearchEJB,interfaceName=at.fhv.team3.applicationbean.interfaces.RemoteSearchBeanFace");
-            remoteSearchBean = (RemoteSearchBeanFace) o;
-            //InitialContext cfx = new InitialContext(p);
-        } catch (NamingException ex) {
-            Logger.getLogger(ManagedSearchBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void search(String searchTerm){
+    private ArrayList<BookDTO> books = new ArrayList();
+    private ArrayList<DvdDTO> dvds = new ArrayList();
+    private ArrayList<MagazineDTO> magazines = new ArrayList();
+    private ArrayList<BookDTO> isbnBooks = new ArrayList();
+    private ArrayList<DvdDTO> titleDvds = new ArrayList();
+    private ArrayList<MagazineDTO> titleMagazins = new ArrayList();
+    private int focus = 0;
+    private Boolean isBook = false;
+    private Boolean isDvd = false;
+    private Boolean isMagazine = false;
+    private String searchTerm;
+    private BookDTO book;
+    private DvdDTO dvd;
+    private MagazineDTO magazine;
+    
+    public void search(){
       ArrayList<ArrayList<DTO>> allMedias = remoteSearchBean.search(searchTerm);
 
-      /*ArrayList<DTO> booksFound = allMedias.get(0);
+      ArrayList<DTO> booksFound = allMedias.get(0);
       ArrayList<DTO> dvdsFound = allMedias.get(1);
       ArrayList<DTO> magazinesFound = allMedias.get(2);
 
       for(int i = 0; i<booksFound.size(); i++){
-          BookDTO book = (BookDTO) booksFound.get(i);
-          books.add(book);
+        BookDTO book = (BookDTO) booksFound.get(i);
+          
+        Boolean bookfound = false;
+            for(int j = 0; j < books.size(); j++){
+                if(books.get(j).equals(book)){
+                    bookfound = true;
+                }
+            }
+            if(!bookfound){
+                books.add(book);
+            }
       }
 
       for(int i = 0; i<dvdsFound.size(); i++){
           DvdDTO dvd = (DvdDTO) dvdsFound.get(i);
-          dvds.add(dvd);
+          
+          Boolean dvdfound = false;
+                        for(int j = 0; j < dvds.size(); j++){
+                            if(dvds.get(j).equals(dvd)){
+                                dvdfound = true;
+                            }
+                        }
+                        if(!dvdfound){
+                            dvds.add(dvd);
+                        }
       }
 
       for(int i = 0; i<magazinesFound.size(); i++){
           MagazineDTO magazine = (MagazineDTO) magazinesFound.get(i);
-          magazines.add(magazine);
-      }*/
-
-
+          
+          Boolean magazinefound = false;
+                        for(int j = 0; j < magazines.size(); j++){
+                            if(magazines.get(j).equals(magazine)){
+                                magazinefound = true;
+                            }
+                        }
+                        if(!magazinefound){
+                            magazines.add(magazine);
+                        }
+      }
     }
+    
+    public String bookAction(BookDTO book) {
+        setBook(book);
+        setIsBook(true);
+        setIsDvd(false);
+        setIsMagazine(false);
+        return "detail.xhtml?faces-redirect=true";
+    }
+    
+    public void buttonAction(ActionEvent actionEvent) {
+        redirect();
+    }
+    
+    public String redirect(){
+        return "/detail.xhtml";
+    }
+
 
     public void getBooksByISBN(String isbn){
       isbnBooks = remoteSearchBean.getBooksByISBN(isbn);
@@ -178,27 +186,59 @@ public class ManagedSearchBean implements Serializable{
             return focus;
         }
 
-        public void setFoundBooks(Boolean found){
-            foundBooks = found;
+        public void setIsBook(Boolean found){
+            isBook = found;
         }
 
-        public Boolean getFoundBooks(){
-            return foundBooks;
+        public Boolean getIsBook(){
+            return isBook;
         }
 
-        public void setFoundDvds(Boolean found){
-            foundDvds = found;
+        public void setIsDvd(Boolean found){
+            isDvd = found;
         }
 
-        public Boolean getFoundDvds(){
-            return foundDvds;
+        public Boolean getIsDvd(){
+            return isDvd;
         }
 
-        public void setFoundMagazines(Boolean found){
-            foundMagazines = found;
+        public void setIsMagazine(Boolean found){
+            isMagazine = found;
         }
 
-        public Boolean getFoundMagazines(){
-            return foundMagazines;
+        public Boolean getIsMagazine(){
+            return isMagazine;
         }
+        
+        public void setSearchTerm(String term){
+            searchTerm = term;
+        }
+        
+        public String getSearchTerm(){
+            return searchTerm;
+        }
+        
+         public void setDvd(DvdDTO dvd){
+        this.dvd = dvd;
+    }
+    
+    public DvdDTO getDvd(){
+        return dvd;
+    }
+    
+    public void setBook(BookDTO book){
+        this.book = book;
+    }
+    
+    public BookDTO getBook(){
+        return book;
+    }
+    
+    public void setMagazine(MagazineDTO magazine){
+        this.magazine = magazine;
+    }
+    
+    public MagazineDTO getMagazine(){
+        return magazine;
+    }
 }

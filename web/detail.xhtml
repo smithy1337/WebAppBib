@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
 
 <h:head>
     <meta charset="UTF-8"></meta>
@@ -20,27 +21,35 @@
     <div class="content">
       <div class="detail">
         <a href="index.xhtml" class="previous round">&#8249; Zurück zur Suche</a>
-        <h1>Harry Potter and the Philosopher's Stone </h1>
+        <f:metadata>
+            <f:viewParam name="book" value="#{managedSearchBean.book}"/> 
+        </f:metadata>
+        
+        <h1>#{managedSearchBean.book}</h1>
+        
+        <c:if test="#{managedSearchBean.isBook == true}">
+                <p:dataTable value="#{managedSearchBean.book}" var="book">
+                    <h1>#{book.title} </h1>
         <div class="img-border">
-            <div class="picture"><img src="res/hp.jpg" /></div>
+                    <div class="picture"><img src="#{book.pictureURL}" /></div>
             <div class="sum">
     					<table>
       					<tbody>
       					<tr>
-      						<td>Titel</td>
-      						<td>Harry Potter and the Philosopher's Stone </td>
+                                            <td>Titel</td>
+                                            <td>#{book.title} </td>
       					</tr>
       					<tr>
       						<td>Verlag</td>
-      						<td>Bloomsbury UK</td>
+      						<td>#{book.publisher}</td>
       					</tr>
       					<tr>
       						<td>Author</td>
-      						<td>Joanne K. Rowling </td>
+                                                <td>#{book.author} </td>
       					</tr>
       					<tr>
       						<td>ISBN</td>
-      						<td>978-1408855652</td>
+                                                <td>#{book.isbn}</td>
       					</tr>
       					</tbody>
     					</table>
@@ -74,6 +83,9 @@
               </tr>
           </table>
         </div>
+          </p:dataTable>
+          </c:if>
+        <h1>#{managedSearchBean.book}</h1>
         </div>
       </div>
 </h:body>
