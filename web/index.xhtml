@@ -41,127 +41,166 @@
 
                     <section id="content1">
                         <table>
-                            <tr>
-                                <th>Title</th>
-                                <th>ISBN</th>
-                            </tr>
-                            <tr>
-                                <td>Harry Potter</td>
-                                <td>123908190285</td>
-                            </tr>
-                            <tr>
-                                <td>Die Zwerge</td>
-                                <td>123890450932</td>
-                            </tr>
+                            <p:dataTable value="#{managedSearchBean.books}" var="media">
+                               <p:column headerText="Title">
+                                   <h:outputText value="#{media.title}" />
+                               </p:column>
+                               <p:column headerText="ISBN">
+                                   <h:outputText value="#{media.isbn}" />
+                               </p:column>
+                               <p:column headerText="" style="width:32px;text-align: center">
+                                   <p:commandLink value="View Detail"
+                                                  type="button"
+                                                  styleClass="ui-icon ui-icon-newwin"
+                                                  immediate="true">
+                                       <f:ajax render="detailDialogId" listener="#{managedSearchBean.getBooksByISBN(media.isbn)}"
+                                               onevent="function(data) { PF('detailDialog').show(); }" />
+                                   </p:commandLink>
+                               </p:column>
+                           </p:dataTable>
+                            
+                           <p:dialog styleClass="dialog" id="detailDialogId" widgetVar="detailDialog"
+                                     modal="true" height="1000" width="1000"
+                                     dynamic="true" resizable="false">
+
+                                   <p:panel id="detailpanelID" header="Book Detail" style="text-align:center;">
+                                       <h:panelGrid columns="2" cellpadding="5">
+                                            <f:facet name="header">
+                                                <p:graphicImage value="#{managedSearchBean.book.pictureURL}" width="300" height="250" style="vertical-align: middle;"/> 
+                                            </f:facet>
+                                           
+                                            <h:outputText value="Title:" />
+                                            <h:outputText value="#{managedSearchBean.book.title}" />
+
+                                            <h:outputText value="Publisher:" />
+                                            <h:outputText value="#{managedSearchBean.book.publisher}" />
+
+                                            <h:outputText value="Author:" />
+                                            <h:outputText value="#{managedSearchBean.book.author}"/>
+
+                                            <h:outputText value="ISBN:" />
+                                            <h:outputText value="#{managedSearchBean.book.isbn}" />
+                                       </h:panelGrid>
+                                       
+                                       <p:dataTable value="#{managedSearchBean.isbnBooks}" var="isbnBooks">
+                                                <p:column headerText="Edition">
+                                                    <h:outputText value="#{isbnBooks.edition}" />
+                                                </p:column>
+                                                <p:column headerText="Shelf Position">
+                                                    <h:outputText value="#{isbnBooks.shelfPos}" />
+                                                </p:column>
+                                                <p:column headerText="Status">
+                                                    <h:outputText value="#{isbnBooks.status}" />
+                                                </p:column>
+                                        </p:dataTable>
+                                   </p:panel>
+                           </p:dialog>
                         </table>
                     </section>
-
+                    
                     <section id="content2">
                         <table>
-                            <tr>
-                                <th>Title</th>
-                                <th>Author</th>
-                            </tr>
-                            <tr>
-                                <td>Harry Potter</td>
-                                <td>Joanne K. Rowling</td>
-                            </tr>
+                            <p:dataTable value="#{managedSearchBean.dvds}" var="dvd">
+                               <p:column headerText="Title">
+                                   <h:outputText value="#{dvd.title}" />
+                               </p:column>
+                               <p:column headerText="Regisseur">
+                                   <h:outputText value="#{dvd.regisseur}" />
+                               </p:column>
+                               <p:column headerText="" style="width:32px;text-align: center">
+                                   <p:commandLink value="View Detail"
+                                                  type="button"
+                                                  styleClass="ui-icon ui-icon-newwin"
+                                                  immediate="true">
+                                       <f:ajax render="detailDVDId" listener="#{managedSearchBean.getDvdByTitle(dvd.title)}"
+                                               onevent="function(data) { PF('detailDVD').show(); }" />
+                                   </p:commandLink>
+                               </p:column>
+                           </p:dataTable>
+                            
+                           <p:dialog styleClass="dialog" id="detailDVDId" widgetVar="detailDVD"
+                                     modal="true" height="1000" width="1000"
+                                     dynamic="true" resizable="false">
+
+                                   <p:panel id="detailpanelDVDID" header="Book Detail" style="text-align:center;">
+                                       <h:panelGrid columns="2" cellpadding="5">
+                                            <f:facet name="header">
+                                                <p:graphicImage value="#{managedSearchBean.dvd.pictureURL}" width="300" height="250" style="vertical-align: middle;"/> 
+                                            </f:facet>
+                                           
+                                            <h:outputText value="Title:" />
+                                            <h:outputText value="#{managedSearchBean.dvd.title}" />
+
+                                            <h:outputText value="Regisseur" />
+                                            <h:outputText value="#{managedSearchBean.dvd.regisseur}" />
+                                       </h:panelGrid>
+                                       
+                                       <p:dataTable value="#{managedSearchBean.titleDvds}" var="titleDvds">
+                                                <p:column headerText="Shelf Position">
+                                                    <h:outputText value="#{titleDvds.shelfPos}" />
+                                                </p:column>
+                                                <p:column headerText="Status">
+                                                    <h:outputText value="#{titleDvds.status}" />
+                                                </p:column>
+                                        </p:dataTable>
+                                   </p:panel>
+                           </p:dialog>
                         </table>
                     </section>
 
                     <section id="content3">
                         <table>
-                            <tr>
-                                <th>Title</th>
-                                <th>Edition</th>
-                            </tr>
-                            <tr>
-                                <td>eMedia</td>
-                                <td>21</td>
-                            </tr>
-                        </table>
-                    </section>
-
-                    <section id="content1">
-                        <table>
-                            <tr>
-                                <th>Title</th>
-                                <th>ISBN</th>
-                            </tr>
-                            <ui:repeat value="#{managedSearchBean.books}" var="book">
-                                <tr>  
-                                    <td><a href="detail.xhtml" onclick="#{managedSearchBean.bookAction(book)}">#{book.title}</a></td>
-                                    <td>#{book.isbn}</td>
-                                </tr>
-                            </ui:repeat> 
+                            <p:dataTable value="#{managedSearchBean.magazines}" var="magazine">
+                               <p:column headerText="Title">
+                                   <h:outputText value="#{magazine.title}" />
+                               </p:column>
+                               <p:column headerText="Edition">
+                                   <h:outputText value="#{magazine.edition}" />
+                               </p:column>
+                               <p:column headerText="" style="width:32px;text-align: center">
+                                   <p:commandLink value="View Detail"
+                                                  type="button"
+                                                  styleClass="ui-icon ui-icon-newwin"
+                                                  immediate="true">
+                                       <f:ajax render="detailMagazineId" listener="#{managedSearchBean.getMagazinesByTitleAndEdition(magazine.title, magazine.edition)}"
+                                               onevent="function(data) { PF('detailMagazine').show(); }" />
+                                   </p:commandLink>
+                               </p:column>
+                           </p:dataTable>
                             
-                            <p:dataTable id="bookTable" var="book" value="#{managedSearchBean.books}">
-                                <p:column headerText="Title">
-                                    <h:outputText value="#{book.title}" />
-                                </p:column>
-                                <p:column headerText="ISBN">
-                                    <h:outputText value="#{book.isbn}" />
-                                </p:column>
-                                <!--<p:column style="width:32px;text-align: center">
-                                    <p:commandButton icon="ui-icon-search" title="View" actionListener="#{managedSearchBean.listener}">
-                                        <f:setPropertyActionListener value="#{book}" target="#{managedSearchBean.book}" />
-                                    </p:commandButton>
-                                </p:column> -->
-                                <p:column style="width:32px;text-align: center">
-                                    <h:form id="formViewButton">
-                                        <p:column style="width:32px;text-align: center">
-                                            <!-- <p:commandButton oncomplete="bookDialog.show()" icon="ui-icon-search" title="View" update=":formBookDetail:bookDetail">
-                                                <f:setPropertyActionListener value="#{book}" target="#{managedSearchBean.book}" />
-                                            </p:commandButton>-->
-                                            <p:commandLink value="View Detail" type="button" title="View" immediate="true">
-                                                <f:ajax listener="#{managedSearchBean.bookAction(book)}" render="bookDetail" onevent="function(data) { PF('bookDialog').show(); }" />
-                     
-                                            </p:commandLink>
-                                        </p:column>
-          
-                                    <p:dialog id="bookDetail" header="Book Info" widgetVar="bookDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                                        
-                                            <p:outputPanel style="text-align:center;">     
-                                                <p:panelGrid  columns="2" rendered="#{not empty managedSearchBean.book}" columnClasses="label,value">
-                                                    <f:facet name="header">
-                                                      <p:graphicImage value="#{managedSearchBean.book.pictureURL}" width="200" height="150"/> 
-                                                    </f:facet>
+                           <p:dialog styleClass="dialog" id="detailMagazineId" widgetVar="detailMagazine"
+                                     modal="true" height="1000" width="1000"
+                                     dynamic="true" resizable="false">
 
-                                                    <h:outputText value="Title:" />
-                                                    <h:outputText value="#{managedSearchBean.book.title}" />
+                                   <p:panel id="detailpanelMagazineID" header="Book Detail" style="text-align:center;">
+                                       <h:panelGrid columns="2" cellpadding="5">
+                                            <f:facet name="header">
+                                                <p:graphicImage value="#{managedSearchBean.magazine.pictureURL}" width="300" height="250" style="vertical-align: middle;"/> 
+                                            </f:facet>
+                                           
+                                            <h:outputText value="Title:" />
+                                            <h:outputText value="#{managedSearchBean.magazine.title}" />
 
-                                                    <h:outputText value="Publisher:" />
-                                                    <h:outputText value="#{managedSearchBean.book.publisher}" />
+                                            <h:outputText value="Publisher:" />
+                                            <h:outputText value="#{managedSearchBean.magazine.publisher}" />
 
-                                                    <h:outputText value="Author:" />
-                                                    <h:outputText value="#{managedSearchBean.book.author}"/>
-
-                                                    <h:outputText value="ISBN:" />
-                                                    <h:outputText value="#{managedSearchBean.book.isbn}" />
-                                                </p:panelGrid>
-                                                <p:dataTable id="bookTable" var="isbnBook" value="#{managedSearchBean.isbnBooks}">
-                                                    <p:column headerText="Auflage:">
-                                                        <h:outputText value="#{isbnBook.edition}" />
-                                                    </p:column>
-                                                    <p:column headerText="Regalnummer">
-                                                        <h:outputText value="#{isbnBook.shelfPos}" />
-                                                    </p:column>
-                                                        <p:column headerText="Status">
-                                                            <h:outputText value="#{isbnBook.status}" />
-                                                    </p:column>
-                                                </p:dataTable>
-                                            </p:outputPanel>
-                                      
-                                    </p:dialog>
-                                    
-                                    </h:form> 
-                                </p:column> 
-                            </p:dataTable>
-                            
+                                            <h:outputText value="Edition" />
+                                            <h:outputText value="#{managedSearchBean.magazine.edition}"/>
+                                       </h:panelGrid>
+                                       
+                                       <p:dataTable value="#{managedSearchBean.titleMagazins}" var="titleMagazines">
+                                                <p:column headerText="Shelf Position">
+                                                    <h:outputText value="#{titleMagazines.shelfPos}" />
+                                                </p:column>
+                                                <p:column headerText="Status">
+                                                    <h:outputText value="#{titleMagazines.status}" />
+                                                </p:column>
+                                        </p:dataTable>
+                                   </p:panel>
+                           </p:dialog>
                         </table>
                     </section>
             </div>
         </main>
-        <br />
     </h:body>
 </html>

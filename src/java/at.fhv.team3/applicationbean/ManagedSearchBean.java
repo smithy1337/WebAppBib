@@ -17,13 +17,14 @@ import javax.annotation.PostConstruct;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ejb.EJB;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.naming.Context;
 
 @ManagedBean (name = "managedSearchBean")
-@SessionScoped
+@ViewScoped
 public class ManagedSearchBean implements Serializable{
     
     @EJB(mappedName="SearchEJB")
@@ -54,6 +55,9 @@ public class ManagedSearchBean implements Serializable{
     }
     
     public void search(){
+      books = new ArrayList();
+      dvds = new ArrayList();
+      magazines = new ArrayList();
       ArrayList<ArrayList<DTO>> allMedias = remoteSearchBean.search(searchTerm);
 
       ArrayList<DTO> booksFound = allMedias.get(0);
@@ -104,29 +108,22 @@ public class ManagedSearchBean implements Serializable{
     }
     
     public void bookAction(BookDTO book) {
-        setBook(book);
-        //return "detail.xhtml?faces-redirect=true";
+        this.book = book;
     }
     
-    public void buttonAction(ActionEvent actionEvent) {
-        redirect();
-    }
-    
-    public String redirect(){
-        return "/detail.xhtml";
-    }
-
-
     public void getBooksByISBN(String isbn){
       isbnBooks = remoteSearchBean.getBooksByISBN(isbn);
+      book = isbnBooks.get(0);
     }
 
     public void getDvdByTitle(String title){
       titleDvds = remoteSearchBean.getDvdByTitle(title);
+      dvd = titleDvds.get(0);
     }
 
     public void getMagazinesByTitleAndEdition(String title, String edition){
       titleMagazins = remoteSearchBean.getMagazinesByTitleAndEdition(title, edition);
+      magazine = titleMagazins.get(0);
     }
 
 	public ArrayList<BookDTO> getBooks() {
@@ -237,10 +234,6 @@ public class ManagedSearchBean implements Serializable{
     
     public void setBook(BookDTO book){
         this.book = book;
-        setIsBook(true);
-        setIsDvd(false);
-        setIsMagazine(false);
-        getBooksByISBN(book.getIsbn()); 
     }
     
     public BookDTO getBook(){
