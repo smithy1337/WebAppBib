@@ -77,6 +77,12 @@ public class ManagedSearchBean implements Serializable{
                 books.add(book);
             }
       }
+      
+      if(books.size()>0){
+          isBook = true;
+      }else{
+          isBook = false;
+      }
 
       for(int i = 0; i<dvdsFound.size(); i++){
           DvdDTO dvd = (DvdDTO) dvdsFound.get(i);
@@ -90,6 +96,12 @@ public class ManagedSearchBean implements Serializable{
                         if(!dvdfound){
                             dvds.add(dvd);
                         }
+      }
+      
+      if(dvds.size()>0){
+          isDvd = true;
+      }else{
+          isDvd = false;
       }
 
       for(int i = 0; i<magazinesFound.size(); i++){
@@ -105,25 +117,42 @@ public class ManagedSearchBean implements Serializable{
                             magazines.add(magazine);
                         }
       }
+      
+      if(magazines.size()>0){
+          isMagazine = true;
+      }else{
+          isMagazine = false;
+      }
     }
     
-    public void bookAction(BookDTO book) {
-        this.book = book;
+    public void bookAction(BookDTO selectedBook) {
+        setBook(selectedBook);
+        getBooksByISBN(selectedBook.getIsbn());
+    }
+    
+    public void dvdAction(DvdDTO selectedDvd){
+        setDvd(selectedDvd);
+        getDvdByTitle(selectedDvd.getTitle());
+    }
+    
+    public void magazineAction(MagazineDTO selectedMagazine){
+        setMagazine(selectedMagazine);
+        getMagazinesByTitleAndEdition(selectedMagazine.getTitle(), selectedMagazine.getEdition());
     }
     
     public void getBooksByISBN(String isbn){
       isbnBooks = remoteSearchBean.getBooksByISBN(isbn);
-      book = isbnBooks.get(0);
+      //book = isbnBooks.get(0);
     }
 
     public void getDvdByTitle(String title){
       titleDvds = remoteSearchBean.getDvdByTitle(title);
-      dvd = titleDvds.get(0);
+      //dvd = titleDvds.get(0);
     }
 
     public void getMagazinesByTitleAndEdition(String title, String edition){
       titleMagazins = remoteSearchBean.getMagazinesByTitleAndEdition(title, edition);
-      magazine = titleMagazins.get(0);
+      //magazine = titleMagazins.get(0);
     }
 
 	public ArrayList<BookDTO> getBooks() {

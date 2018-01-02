@@ -20,28 +20,19 @@
         </div>
         <h:form id="formInput">
         <div class="in">
-                <!-- <input type="text" name="search" placeholder="Search.."></input> -->
-                <p:remoteCommand name="search" actionListener="#{managedSearchBean.search()}"/>
-                <p:inputText id="searchInput" value="#{managedSearchBean.searchTerm}" 
-                             onkeypress="if (event.keyCode === 13) {search(); return false; }"/>
-                <h:commandButton value="Search" action="#{managedSearchBean.search()}" />
+                <p:inputText id="searchInput" value="#{managedSearchBean.searchTerm}"/>
+                <h:commandButton id="button" value="Search" action="#{managedSearchBean.search()}" style="width:85px;height:45px; margin-right:0%;"/>  
         </div>
         </h:form>
         <br/>
         <main>
             <div class="tabs">
-                    <input id="tab1" type="radio" name="tabs"/>
-                    <label for="tab1">Books</label>
-
-                    <input id="tab2" type="radio" name="tabs"/>
-                    <label for="tab2">DVDs</label>
-
-                    <input id="tab3" type="radio" name="tabs"/>
-                    <label for="tab3">Magazines</label>
-
-                    <section id="content1">
-                        <table>
-                            <p:dataTable value="#{managedSearchBean.books}" var="media">
+                <c:if test="#{managedSearchBean.isBook == true || managedSearchBean.isDvd == true || managedSearchBean.isMagazine == true}">
+                <p:tabView>
+                <c:if test="#{managedSearchBean.isBook == true}">
+                <p:tab title="Books">
+                    <h:panelGrid columns="3" cellpadding="10">
+                        <p:dataTable value="#{managedSearchBean.books}" var="media">
                                <p:column headerText="Title">
                                    <h:outputText value="#{media.title}" />
                                </p:column>
@@ -53,22 +44,72 @@
                                                   type="button"
                                                   styleClass="ui-icon ui-icon-newwin"
                                                   immediate="true">
-                                       <f:ajax render="detailDialogId" listener="#{managedSearchBean.getBooksByISBN(media.isbn)}"
+                                       <f:ajax render="detailDialogId" listener="#{managedSearchBean.bookAction(media)}"
                                                onevent="function(data) { PF('detailDialog').show(); }" />
                                    </p:commandLink>
                                </p:column>
                            </p:dataTable>
-                            
-                           <p:dialog styleClass="dialog" id="detailDialogId" widgetVar="detailDialog"
+                    </h:panelGrid>
+                </p:tab>
+                </c:if>
+                    <c:if test="#{managedSearchBean.isDvd == true}">
+                <p:tab title="Dvd">
+                    <h:panelGrid columns="2" cellpadding="10">
+                        <p:dataTable value="#{managedSearchBean.dvds}" var="dvd">
+                               <p:column headerText="Title">
+                                   <h:outputText value="#{dvd.title}" />
+                               </p:column>
+                               <p:column headerText="Regisseur">
+                                   <h:outputText value="#{dvd.regisseur}" />
+                               </p:column>
+                               <p:column headerText="" style="width:32px;text-align: center">
+                                   <p:commandLink value="View Detail"
+                                                  type="button"
+                                                  styleClass="ui-icon ui-icon-newwin"
+                                                  immediate="true">
+                                       <f:ajax render="detailDVDId" listener="#{managedSearchBean.dvdAction(dvd)}"
+                                               onevent="function(data) { PF('detailDVD').show(); }" />
+                                   </p:commandLink>
+                               </p:column>
+                           </p:dataTable>
+                    </h:panelGrid>
+                </p:tab>
+                    </c:if>
+                    <c:if test="#{managedSearchBean.isMagazine == true}">
+                <p:tab title="Magazin">
+                    <h:panelGrid columns="2" cellpadding="10">
+                        <p:dataTable value="#{managedSearchBean.magazines}" var="magazine">
+                               <p:column headerText="Title">
+                                   <h:outputText value="#{magazine.title}" />
+                               </p:column>
+                               <p:column headerText="Edition">
+                                   <h:outputText value="#{magazine.edition}" />
+                               </p:column>
+                               <p:column headerText="" style="width:32px;text-align: center">
+                                   <p:commandLink value="View Detail"
+                                                  type="button"
+                                                  styleClass="ui-icon ui-icon-newwin"
+                                                  immediate="true">
+                                       <f:ajax render="detailMagazineId" listener="#{managedSearchBean.magazineAction(magazine)}"
+                                               onevent="function(data) { PF('detailMagazine').show(); }" />
+                                   </p:commandLink>
+                               </p:column>
+                           </p:dataTable>
+                    </h:panelGrid>
+                </p:tab>
+                    </c:if>
+            </p:tabView>
+                </c:if>
+                <p:dialog styleClass="dialog" id="detailDialogId" widgetVar="detailDialog"
                                      modal="true" height="1000" width="1000"
                                      dynamic="true" resizable="false">
 
                                    <p:panel id="detailpanelID" header="Book Detail" style="text-align:center;">
                                        <h:panelGrid columns="2" cellpadding="5">
                                             <f:facet name="header">
-                                                <p:graphicImage value="#{managedSearchBean.book.pictureURL}" width="300" height="250" style="vertical-align: middle;"/> 
+                                                <p:graphicImage value="#{managedSearchBean.book.pictureURL}" />
                                             </f:facet>
-                                           
+
                                             <h:outputText value="Title:" />
                                             <h:outputText value="#{managedSearchBean.book.title}" />
 
@@ -81,7 +122,7 @@
                                             <h:outputText value="ISBN:" />
                                             <h:outputText value="#{managedSearchBean.book.isbn}" />
                                        </h:panelGrid>
-                                       
+
                                        <p:dataTable value="#{managedSearchBean.isbnBooks}" var="isbnBooks">
                                                 <p:column headerText="Edition">
                                                     <h:outputText value="#{isbnBooks.edition}" />
@@ -95,46 +136,23 @@
                                         </p:dataTable>
                                    </p:panel>
                            </p:dialog>
-                        </table>
-                    </section>
-                    
-                    <section id="content2">
-                        <table>
-                            <p:dataTable value="#{managedSearchBean.dvds}" var="dvd">
-                               <p:column headerText="Title">
-                                   <h:outputText value="#{dvd.title}" />
-                               </p:column>
-                               <p:column headerText="Regisseur">
-                                   <h:outputText value="#{dvd.regisseur}" />
-                               </p:column>
-                               <p:column headerText="" style="width:32px;text-align: center">
-                                   <p:commandLink value="View Detail"
-                                                  type="button"
-                                                  styleClass="ui-icon ui-icon-newwin"
-                                                  immediate="true">
-                                       <f:ajax render="detailDVDId" listener="#{managedSearchBean.getDvdByTitle(dvd.title)}"
-                                               onevent="function(data) { PF('detailDVD').show(); }" />
-                                   </p:commandLink>
-                               </p:column>
-                           </p:dataTable>
-                            
-                           <p:dialog styleClass="dialog" id="detailDVDId" widgetVar="detailDVD"
+                <p:dialog styleClass="dialog" id="detailDVDId" widgetVar="detailDVD"
                                      modal="true" height="1000" width="1000"
                                      dynamic="true" resizable="false">
 
                                    <p:panel id="detailpanelDVDID" header="Book Detail" style="text-align:center;">
                                        <h:panelGrid columns="2" cellpadding="5">
                                             <f:facet name="header">
-                                                <p:graphicImage value="#{managedSearchBean.dvd.pictureURL}" width="300" height="250" style="vertical-align: middle;"/> 
+                                                <p:graphicImage value="#{managedSearchBean.dvd.pictureURL}" />
                                             </f:facet>
-                                           
+
                                             <h:outputText value="Title:" />
                                             <h:outputText value="#{managedSearchBean.dvd.title}" />
 
                                             <h:outputText value="Regisseur" />
                                             <h:outputText value="#{managedSearchBean.dvd.regisseur}" />
                                        </h:panelGrid>
-                                       
+
                                        <p:dataTable value="#{managedSearchBean.titleDvds}" var="titleDvds">
                                                 <p:column headerText="Shelf Position">
                                                     <h:outputText value="#{titleDvds.shelfPos}" />
@@ -145,39 +163,17 @@
                                         </p:dataTable>
                                    </p:panel>
                            </p:dialog>
-                        </table>
-                    </section>
 
-                    <section id="content3">
-                        <table>
-                            <p:dataTable value="#{managedSearchBean.magazines}" var="magazine">
-                               <p:column headerText="Title">
-                                   <h:outputText value="#{magazine.title}" />
-                               </p:column>
-                               <p:column headerText="Edition">
-                                   <h:outputText value="#{magazine.edition}" />
-                               </p:column>
-                               <p:column headerText="" style="width:32px;text-align: center">
-                                   <p:commandLink value="View Detail"
-                                                  type="button"
-                                                  styleClass="ui-icon ui-icon-newwin"
-                                                  immediate="true">
-                                       <f:ajax render="detailMagazineId" listener="#{managedSearchBean.getMagazinesByTitleAndEdition(magazine.title, magazine.edition)}"
-                                               onevent="function(data) { PF('detailMagazine').show(); }" />
-                                   </p:commandLink>
-                               </p:column>
-                           </p:dataTable>
-                            
-                           <p:dialog styleClass="dialog" id="detailMagazineId" widgetVar="detailMagazine"
+                <p:dialog styleClass="dialog" id="detailMagazineId" widgetVar="detailMagazine"
                                      modal="true" height="1000" width="1000"
                                      dynamic="true" resizable="false">
 
                                    <p:panel id="detailpanelMagazineID" header="Book Detail" style="text-align:center;">
                                        <h:panelGrid columns="2" cellpadding="5">
                                             <f:facet name="header">
-                                                <p:graphicImage value="#{managedSearchBean.magazine.pictureURL}" width="300" height="250" style="vertical-align: middle;"/> 
+                                                <p:graphicImage value="#{managedSearchBean.magazine.pictureURL}"/> 
                                             </f:facet>
-                                           
+
                                             <h:outputText value="Title:" />
                                             <h:outputText value="#{managedSearchBean.magazine.title}" />
 
@@ -187,7 +183,7 @@
                                             <h:outputText value="Edition" />
                                             <h:outputText value="#{managedSearchBean.magazine.edition}"/>
                                        </h:panelGrid>
-                                       
+
                                        <p:dataTable value="#{managedSearchBean.titleMagazins}" var="titleMagazines">
                                                 <p:column headerText="Shelf Position">
                                                     <h:outputText value="#{titleMagazines.shelfPos}" />
@@ -198,8 +194,7 @@
                                         </p:dataTable>
                                    </p:panel>
                            </p:dialog>
-                        </table>
-                    </section>
+
             </div>
         </main>
     </h:body>

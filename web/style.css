@@ -28,7 +28,7 @@ Index und Allgemain
 }
 
 .in h:inputText{
-  width: 1337px;
+  width: 1200px;
   box-sizing: border-box;
   border: 2px solid #ccc;
   border-radius: 4px;
@@ -41,7 +41,7 @@ Index und Allgemain
 }
 
 input[type=text] {
-    width: 1337px;
+    width: 1200px;
     box-sizing: border-box;
     border: 2px solid #ccc;
     border-radius: 4px;
@@ -169,6 +169,11 @@ tabs.input:checked + label {
 #tab2:checked ~ #content2,
 #tab3:checked ~ #content3 {
     display: block;
+}
+
+tabs.img{
+    height: 400px;
+    width: auto;
 }
 
 @media screen and (max-width: 650px) {
