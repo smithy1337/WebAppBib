@@ -21,13 +21,13 @@
         <h:form id="formInput">
         <div class="in">
                 <p:inputText id="searchInput" value="#{managedSearchBean.searchTerm}"/>
-                <h:commandButton id="button" value="Search" action="#{managedSearchBean.search()}" style="width:85px;height:45px; margin-right:0%;"/>  
+                <h:commandButton id="button" value="Search" action="#{managedSearchBean.search()}" style="width:90px;height:45px; margin-right:0%;"/>  
         </div>
         </h:form>
         <br/>
         <main>
             <div class="tabs">
-                <c:if test="#{managedSearchBean.isBook == true || managedSearchBean.isDvd == true || managedSearchBean.isMagazine == true}">
+                <c:if test="#{(managedSearchBean.searchSet == true) and (managedSearchBean.emptySearch == false)}">
                 <p:tabView>
                 <c:if test="#{managedSearchBean.isBook == true}">
                 <p:tab title="Books">
@@ -100,6 +100,9 @@
                     </c:if>
             </p:tabView>
                 </c:if>
+                <c:if test="#{(managedSearchBean.searchSet == true) and (managedSearchBean.emptySearch == true)}">
+                    <p style="font-size: 18px;">Eine leere Suche ergibt kein Ergebnis! Bitte geben sie einen Suchbegriff ein!</p>
+                </c:if>
                 <p:dialog styleClass="dialog" id="detailDialogId" widgetVar="detailDialog"
                                      modal="true" height="1000" width="1000"
                                      dynamic="true" resizable="false">
@@ -140,7 +143,7 @@
                                      modal="true" height="1000" width="1000"
                                      dynamic="true" resizable="false">
 
-                                   <p:panel id="detailpanelDVDID" header="Book Detail" style="text-align:center;">
+                                   <p:panel id="detailpanelDVDID" header="Dvd Detail" style="text-align:center;">
                                        <h:panelGrid columns="2" cellpadding="5">
                                             <f:facet name="header">
                                                 <p:graphicImage value="#{managedSearchBean.dvd.pictureURL}" />
@@ -168,7 +171,7 @@
                                      modal="true" height="1000" width="1000"
                                      dynamic="true" resizable="false">
 
-                                   <p:panel id="detailpanelMagazineID" header="Book Detail" style="text-align:center;">
+                                   <p:panel id="detailpanelMagazineID" header="Magazine Detail" style="text-align:center;">
                                        <h:panelGrid columns="2" cellpadding="5">
                                             <f:facet name="header">
                                                 <p:graphicImage value="#{managedSearchBean.magazine.pictureURL}"/> 

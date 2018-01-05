@@ -44,6 +44,8 @@ public class ManagedSearchBean implements Serializable{
     private BookDTO book;
     private DvdDTO dvd;
     private MagazineDTO magazine;
+    private Boolean emptySearch = false;
+    private Boolean searchSet = false;
     
     public void listener(ActionEvent ae){
         String url = "detail.xhtml";
@@ -58,6 +60,15 @@ public class ManagedSearchBean implements Serializable{
       books = new ArrayList();
       dvds = new ArrayList();
       magazines = new ArrayList();
+      
+      searchSet = true;
+      
+      if(searchTerm.isEmpty()){
+          emptySearch = true;
+      }else{
+          emptySearch = false;
+      }
+      
       ArrayList<ArrayList<DTO>> allMedias = remoteSearchBean.search(searchTerm);
 
       ArrayList<DTO> booksFound = allMedias.get(0);
@@ -275,5 +286,21 @@ public class ManagedSearchBean implements Serializable{
     
     public MagazineDTO getMagazine(){
         return magazine;
+    }
+    
+    public void setSearchSet(Boolean search){
+        this.searchSet = search;
+    }
+    
+    public Boolean getSearchSet(){
+        return searchSet;
+    }
+    
+    public void setEmptySearch(Boolean emptySearch){
+        this.emptySearch = emptySearch;
+    }
+            
+    public Boolean getEmptySearch(){
+        return emptySearch;
     }
 }

@@ -28,7 +28,7 @@ Index und Allgemain
 }
 
 .in h:inputText{
-  width: 1200px;
+  width: 1245px;
   box-sizing: border-box;
   border: 2px solid #ccc;
   border-radius: 4px;
@@ -41,7 +41,7 @@ Index und Allgemain
 }
 
 input[type=text] {
-    width: 1200px;
+    width: 1245px;
     box-sizing: border-box;
     border: 2px solid #ccc;
     border-radius: 4px;
@@ -175,6 +175,7 @@ tabs.img{
     height: 400px;
     width: auto;
 }
+
 
 @media screen and (max-width: 650px) {
     label {
