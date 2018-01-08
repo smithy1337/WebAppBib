@@ -36,6 +36,9 @@
                                <p:column headerText="Title">
                                    <h:outputText value="#{media.title}" />
                                </p:column>
+                                <p:column headerText="Author">
+                                    <h:outputText value="#{media.author}" />
+                               </p:column>
                                <p:column headerText="ISBN">
                                    <h:outputText value="#{media.isbn}" />
                                </p:column>
@@ -102,6 +105,10 @@
                 </c:if>
                 <c:if test="#{(managedSearchBean.searchSet == true) and (managedSearchBean.emptySearch == true)}">
                     <p style="font-size: 18px;">Eine leere Suche ergibt kein Ergebnis! Bitte geben sie einen Suchbegriff ein!</p>
+                </c:if>
+                <c:if test="#{(managedSearchBean.searchSet == true) and (managedSearchBean.isMagazine == false) and (managedSearchBean.isBook == false) and (managedSearchBean.isDvd
+                               == false)}">
+                    <p style="font-size: 18px;">Es wurde kein Medium für diesen Suchbegriff gefunden!</p>
                 </c:if>
                 <p:dialog styleClass="dialog" id="detailDialogId" widgetVar="detailDialog"
                                      modal="true" height="1000" width="1000"
